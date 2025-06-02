@@ -1,4 +1,4 @@
-ï»¿# Versio 1.00. 24.4.2025. Jalmari Valimaan tikkukirjaimilla koodattu
+﻿# Versio 1.00. 24.4.2025. Jalmari Valimaan tikkukirjaimilla koodattu
 #      ____.      .__  .__         
 #     |    |____  |  | |  |  __ __ 
 #     |    \__  \ |  | |  | |  |  \
@@ -14,12 +14,12 @@ function Show-Menu {
     Clear-Host
     Write-Host "================ $Title ================"
     Write-Host ""
-    Write-Host "VihreÃ¤ teksti tarkoittaa, ettÃ¤ tehtÃ¤vÃ¤n kohta on oikein tehty" -ForegroundColor Green
-    Write-Host "Punainen teksti tarkoittaa, ettÃ¤ tehtÃ¤vÃ¤n kohta on todennÃ¤kÃ¶isesti vÃ¤Ã¤rin tehty" -ForegroundColor Red
-    Write-Host "Keltainen teksti tarkoittaa, ettÃ¤ tehtÃ¤vÃ¤n kohta oli sellainen jota skripti ei osaa tarkistaa" -ForegroundColor Yellow
+    Write-Host "Vihreä teksti tarkoittaa, että tehtävän kohta on oikein tehty" -ForegroundColor Green
+    Write-Host "Punainen teksti tarkoittaa, että tehtävän kohta on todennäköisesti väärin tehty" -ForegroundColor Red
+    Write-Host "Keltainen teksti tarkoittaa, että tehtävän kohta oli sellainen jota skripti ei osaa tarkistaa" -ForegroundColor Yellow
     Write-Host ""
 
-    Write-Host "Paina '1' tarkistaaksesi tehtÃ¤vÃ¤n: 	     001 Windows oikeilla laitteilla" 
+    Write-Host "Paina '1' tarkistaaksesi tehtävän: 	     001 Windows oikeilla laitteilla" 
     Write-Host "Paina 'Q' lopettakseesi" 
     Write-Host ""
 }
@@ -27,7 +27,7 @@ function Show-Menu {
 do
  {
     Show-Menu
-    $selection = Read-Host "Valitse tehtÃ¤vÃ¤, jonka haluat tarkistaa skriptillÃ¤"
+    $selection = Read-Host "Valitse tehtävä, jonka haluat tarkistaa skriptillä"
     switch ($selection)
     {
 
@@ -170,55 +170,55 @@ do
         Write-Host "Sivuston oletushakemisto on $IIS_oletusHakemisto joka on väärin" -ForegroundColor Red
     }
 
-    #Sivun sisältö
+    #Sivun sisältä
     $IIS_sisalto = Get-Content "C:\wwwpalvelin\index.html"
  
     if ($IIS_sisalto -like "*Palvelimet on kivoja!*")
         {
-        Write-Host "C:\wwwpalvelin\index.html tiedoston sisältö on oikein ja siinä lukee: $IIS_sisalto" -ForegroundColor Green
+        Write-Host "C:\wwwpalvelin\index.html tiedoston sisältä on oikein ja siinä lukee: $IIS_sisalto" -ForegroundColor Green
         }
     else {
-        Write-Host "C:\wwwpalvelin\index.html tiedoston sisältö ei ole oikein" -ForegroundColor Red
+        Write-Host "C:\wwwpalvelin\index.html tiedoston sisältä ei ole oikein" -ForegroundColor Red
     }
 
     #DNS forward zone
     $DNS_fwZone = (Get-DnsServerZone | Where-Object {$_.ZoneName -eq "firmansivut.local"}).ZoneName
     if ($DNS_fwZone -eq "firmansivut.local")
         {
-        Write-Host "DNS alue $DNS_fwZone löytyy" -ForegroundColor Green
+        Write-Host "DNS alue $DNS_fwZone läytyy" -ForegroundColor Green
         }
     else {
-        Write-Host "DNS aluetta $DNS_fwZone ei löydetty" -ForegroundColor Red
+        Write-Host "DNS aluetta $DNS_fwZone ei läydetty" -ForegroundColor Red
     }
 
     #A tietue
     $DNS_aTietue = (Get-DnsServerResourceRecord -ZoneName "firmansivut.local" | Where-Object {$_.RecordType -eq "A"}).RecordData.IPv4Address.IPAddressToString
     if ($DNS_aTietue -eq "192.168.200.10")
         {
-        Write-Host "DNS alueelta löytyy oikea A-tietue" -ForegroundColor Green
+        Write-Host "DNS alueelta läytyy oikea A-tietue" -ForegroundColor Green
         }
     else {
-        Write-Host "DNS alueelta ei löydy oikeaa A-tietuetta" -ForegroundColor Red
+        Write-Host "DNS alueelta ei läydy oikeaa A-tietuetta" -ForegroundColor Red
     }
 
     #CNAME tietue
     $DNS_CNAMETietue = (Get-DnsServerResourceRecord -ZoneName "firmansivut.local" | Where-Object {$_.RecordType -eq "CNAME"}).HostName
     if ($DNS_CNAMETietue -eq "www")
         {
-        Write-Host "DNS alueelta löytyy oikea CNAME-tietue" -ForegroundColor Green
+        Write-Host "DNS alueelta läytyy oikea CNAME-tietue" -ForegroundColor Green
         }
     else {
-        Write-Host "DNS alueelta ei löydy oikeaa CNAME-tietuetta" -ForegroundColor Red
+        Write-Host "DNS alueelta ei läydy oikeaa CNAME-tietuetta" -ForegroundColor Red
     }
 
     #Onko verkkojako Xfiles olemassa?
     $netshare_JakoKansio = Test-Path \\win-palvelin-1\xfiles
     if ($netshare_JakoKansio -eq "True")
         {
-        Write-Host "Verkkojako löytyy polusta \\win-palvelin-1\xfiles" -ForegroundColor Green
+        Write-Host "Verkkojako läytyy polusta \\win-palvelin-1\xfiles" -ForegroundColor Green
         }
     else {
-        Write-Host "Verkkojakoa ei löydy polusta \\win-palvelin-1\xfiles" -ForegroundColor Red
+        Write-Host "Verkkojakoa ei läydy polusta \\win-palvelin-1\xfiles" -ForegroundColor Red
     }
 
     #Onko verkkojaon oikeudet kunnossa JakoKansio
@@ -231,15 +231,15 @@ do
         Write-Host "Verkkojaossa JakoKansio ryhmällä Everyone ei ole kaikki oikeudet" -ForegroundColor Red
     }
 
-    Write-Host "Seuraavaksi joudut kirjoittamaan itse Windows työaseman nimen sekä langattomaan verkkoon yhdistetyn puhelimen nimen. Löydät tiedot helposti joko laitteilta itseltään tai katsomalla ne DHCP palvelun Address Leases kohdasta" -ForegroundColor Yellow
+    Write-Host "Seuraavaksi joudut kirjoittamaan itse Windows tyäaseman nimen sekä langattomaan verkkoon yhdistetyn puhelimen nimen. Läydät tiedot helposti joko laitteilta itseltään tai katsomalla ne DHCP palvelun Address Leases kohdasta" -ForegroundColor Yellow
 
 
-    $dhcpTestikone = Read-Host "Anna työasemana toimivan tietokoneen nimi, jotta voidaan tarkistaa onko se saanut IP-asetukset DHCP-palvelulta: "
+    $dhcpTestikone = Read-Host "Anna tyäasemana toimivan tietokoneen nimi, jotta voidaan tarkistaa onko se saanut IP-asetukset DHCP-palvelulta: "
     $dhcpTestiIP = (Get-DhcpServerv4Lease -ScopeId 192.168.200.0 | Where-Object {$_.HostName -like "*$dhcpTestikone*"}).IPAddress.IPAddressToString
 
     if ($dhcpTestiIP -eq $null)
         {
-        Write-Host "Laitetta nimeltään $dhcpTestikone ei löytynyt DHCP-palvelimelta, jolla olisi jaettu IP-osoite?" -ForegroundColor Red
+        Write-Host "Laitetta nimeltään $dhcpTestikone ei läytynyt DHCP-palvelimelta, jolla olisi jaettu IP-osoite?" -ForegroundColor Red
         }
     else {
         Write-Host "Laitteelle nimeltään $dhcpTestikone on jaettu IP-osoite DHCP-palvelimelta" -ForegroundColor Green
@@ -251,7 +251,7 @@ do
 
     if ($dhcpTestipuhelinIP -eq $null)
         {
-        Write-Host "Laitetta nimeltään $dhcpTestipuhelin ei löytynyt DHCP-palvelimelta, jolla olisi jaettu IP-osoite?" -ForegroundColor Red
+        Write-Host "Laitetta nimeltään $dhcpTestipuhelin ei läytynyt DHCP-palvelimelta, jolla olisi jaettu IP-osoite?" -ForegroundColor Red
         }
     else {
         Write-Host "Laitteelle nimeltään $dhcpTestipuhelin on jaettu IP-osoite DHCP-palvelimelta" -ForegroundColor Green
