@@ -1,4 +1,4 @@
-﻿# Versio 1.00. 24.4.2025. Jalmari Valimaan tikkukirjaimilla koodattu
+# Versio 1.00. 24.4.2025. Jalmari Valimaan tikkukirjaimilla koodattu
 #      ____.      .__  .__         
 #     |    |____  |  | |  |  __ __ 
 #     |    \__  \ |  | |  | |  |  \
@@ -41,7 +41,7 @@ do
         Write-Host "Tietokoneen nimi on $tietokoneenNimi eli oikein" -ForegroundColor Green
         }
     else {
-        Write-Host "Tietokoneen nimi on $tietokoneenNimi eli v��rin" -ForegroundColor Red
+        Write-Host "Tietokoneen nimi on $tietokoneenNimi eli väärin" -ForegroundColor Red
     }
 
     #Mistä verkkokortista IP-osoite haetaan
@@ -55,39 +55,39 @@ do
         Write-Host "IP-osoite on $IP_osoite eli oikein" -ForegroundColor Green
         }
     else {
-        Write-Host "IP-osoite on $IP_osoite eli v��rin" -ForegroundColor Red
+        Write-Host "IP-osoite on $IP_osoite eli väärin" -ForegroundColor Red
     }
 
     #Aliverkonmaski
-    $aliverkonMaski = (Get-Netipaddress -InterfaceAlias "Ethernet" -AddressFamily IPv4).PrefixLength
+    $aliverkonMaski = (Get-Netipaddress -InterfaceAlias $IP_NIC -AddressFamily IPv4).PrefixLength
 
     if ($aliverkonMaski -eq "21")
         {
         Write-Host "Aliverkonmaski on /$aliverkonMaski eli oikein" -ForegroundColor Green
         }
     else {
-        Write-Host "Aliverkonmaski on /$aliverkonMaski eli v��rin" -ForegroundColor Red
+        Write-Host "Aliverkonmaski on /$aliverkonMaski eli väärin" -ForegroundColor Red
     }
 
-    #Oletusyhdysk�yt�v�
-    $oletusYhdyskaytava = (Get-NetIPConfiguration -InterfaceAlias "Ethernet").IPv4DefaultGateway.NextHop
+    #Oletusyhdyskäytävä
+    $oletusYhdyskaytava = (Get-NetIPConfiguration -InterfaceAlias $IP_NIC).IPv4DefaultGateway.NextHop
     if ($oletusYhdyskaytava -eq "10.3.184.1")
         {
-        Write-Host "Oletusyhdysk�yt�v� on $oletusYhdyskaytava eli oikein" -ForegroundColor Green
+        Write-Host "Oletusyhdyskäytävä on $oletusYhdyskaytava eli oikein" -ForegroundColor Green
         }
     else {
-        Write-Host "Oletusyhdysk�yt�v� on $oletusYhdyskaytava eli v��rin" -ForegroundColor Red
+        Write-Host "Oletusyhdyskäytävä on $oletusYhdyskaytava eli väärin" -ForegroundColor Red
     }
 
     #DNS-osoite
-    $dnsOsoite = (Get-DnsClientServerAddress -InterfaceAlias "Ethernet" -AddressFamily IPv4).ServerAddresses
+    $dnsOsoite = (Get-DnsClientServerAddress -InterfaceAlias $IP_NIC -AddressFamily IPv4).ServerAddresses
 
     if ($dnsOsoite -eq "10.3.184.2")
         {
         Write-Host "DNS on $dnsOsoite eli oikein" -ForegroundColor Green
         }
     else {
-        Write-Host "DNS on $dnsOsoite eli v��rin" -ForegroundColor Red
+        Write-Host "DNS on $dnsOsoite eli väärin" -ForegroundColor Red
     }
 
     #Internet yhteyden testaaminen
@@ -95,10 +95,10 @@ do
 
     if ($yhteysTesti -eq "True")
         {
-        Write-Host "Yhteytt� testattu osoitteeseen 8.8.8.8, yhteys onnistui" -ForegroundColor Green
+        Write-Host "Yhteyttä testattu osoitteeseen 8.8.8.8, yhteys onnistui" -ForegroundColor Green
         }
     else {
-        Write-Host "Yhteytt� testattu osoitteeseen 8.8.8.8, yhteys ei onnistunut" -ForegroundColor Red
+        Write-Host "Yhteyttä testattu osoitteeseen 8.8.8.8, yhteys ei onnistunut" -ForegroundColor Red
     }
 
 
@@ -111,60 +111,60 @@ do
     
     if ($teamviewerTarkistus -eq "True")
         {
-        Write-Host "TeamViewer l�ytyy sijainnista $teamviewerPolku" -ForegroundColor Green
+        Write-Host "TeamViewer läytyy sijainnista $teamviewerPolku" -ForegroundColor Green
         }
     else {
-        Write-Host "TeamViewera ei l�ydy sijainnista $teamviewerPolku" -ForegroundColor Red
+        Write-Host "TeamViewera ei läydy sijainnista $teamviewerPolku" -ForegroundColor Red
     }
 
-    #Ryhmien j�senyydet
+    #Ryhmien jäsenyydet
     $petjaRyhma1 = (Get-LocalGroupMember -Group "Remote Desktop Users" | Where-Object {$_.Name -like "*petja*"}).Name
     if ($petjaRyhma1 -like "*petja*")
         {
-        Write-Host "K�ytt�j� nimelt��n $petjaRyhma1 on oikeassa ryhm�ss� Remote Desktop Users" -ForegroundColor Green
+        Write-Host "Käyttäjä nimeltään $petjaRyhma1 on oikeassa ryhmässä Remote Desktop Users" -ForegroundColor Green
         }
     else {
-        Write-Host "K�ytt�j� nimelt��n $petjaRyhma1 ei ole oikeassa ryhm�ss� Remote Desktop Users" -ForegroundColor Red
+        Write-Host "Käyttäjä nimeltään $petjaRyhma1 ei ole oikeassa ryhmässä Remote Desktop Users" -ForegroundColor Red
     }
 
-    #Ryhmien j�senyydet
+    #Ryhmien jäsenyydet
     $petjaRyhma2 = (Get-LocalGroupMember -Group "Remote Management Users" | Where-Object {$_.Name -like "*petja*"}).Name
     if ($petjaRyhma2 -like "*petja*")
         {
-        Write-Host "K�ytt�j� nimelt��n $petjaRyhma1 on oikeassa ryhm�ss� Remote Management Users" -ForegroundColor Green
+        Write-Host "Käyttäjä nimeltään $petjaRyhma1 on oikeassa ryhmässä Remote Management Users" -ForegroundColor Green
         }
     else {
-        Write-Host "K�ytt�j� nimelt��n $petjaRyhma1 ei ole oikeassa ryhm�ss� Remote Management Users" -ForegroundColor Red
+        Write-Host "Käyttäjä nimeltään $petjaRyhma1 ei ole oikeassa ryhmässä Remote Management Users" -ForegroundColor Red
     }
 
-    #Ryhmien j�senyydet
+    #Ryhmien jäsenyydet
     $jalluRyhma1 = (Get-LocalGroupMember -Group "Backup Operators" | Where-Object {$_.Name -like "*jallu*"}).Name
     if ($jalluRyhma1 -like "*jallu*")
         {
-        Write-Host "K�ytt�j� nimelt��n $jalluRyhma1 on oikeassa ryhm�ss� Backup Operators" -ForegroundColor Green
+        Write-Host "Käyttäjä nimeltään $jalluRyhma1 on oikeassa ryhmässä Backup Operators" -ForegroundColor Green
         }
     else {
-        Write-Host "K�ytt�j� nimelt��n $jalluRyhma1 ei ole oikeassa ryhm�ss� Backup Operators" -ForegroundColor Red
+        Write-Host "Käyttäjä nimeltään $jalluRyhma1 ei ole oikeassa ryhmässä Backup Operators" -ForegroundColor Red
     }
 
-    #Ryhmien j�senyydet
+    #Ryhmien jäsenyydet
     $jalluRyhma2 = (Get-LocalGroupMember -Group "Print Operators" | Where-Object {$_.Name -like "*jallu*"}).Name
     if ($jalluRyhma2 -like "*jallu*")
         {
-        Write-Host "K�ytt�j� nimelt��n $jalluRyhma1 on oikeassa ryhm�ss� Print Operators" -ForegroundColor Green
+        Write-Host "Käyttäjä nimeltään $jalluRyhma1 on oikeassa ryhmässä Print Operators" -ForegroundColor Green
         }
     else {
-        Write-Host "K�ytt�j� nimelt��n $jalluRyhma1 ei ole oikeassa ryhm�ss� Print Operators" -ForegroundColor Red
+        Write-Host "Käyttäjä nimeltään $jalluRyhma1 ei ole oikeassa ryhmässä Print Operators" -ForegroundColor Red
     }
 
     #IIS directory browsing
     $IIS_directoryBrowsing = (Get-WebConfigurationProperty -filter /system.webServer/directoryBrowse -name enabled -PSPath 'IIS:\Sites\Default Web Site').Value
     if ($IIS_directoryBrowsing -eq "True")
         {
-        Write-Host "Sivuston directory browsing on p��ll�" -ForegroundColor Green
+        Write-Host "Sivuston directory browsing on päällä" -ForegroundColor Green
         }
     else {
-        Write-Host "Sivuston directory browsing ei ole p��ll�" -ForegroundColor Red
+        Write-Host "Sivuston directory browsing ei ole päällä" -ForegroundColor Red
     }
 
     #IIS Oletushakemisto
@@ -174,21 +174,21 @@ do
         Write-Host "Sivuston oletushakemisto on $IIS_oletusHakemisto" -ForegroundColor Green
         }
     else {
-        Write-Host "Sivuston oletushakemisto on $IIS_oletusHakemisto joka on v��rin" -ForegroundColor Red
+        Write-Host "Sivuston oletushakemisto on $IIS_oletusHakemisto joka on väärin" -ForegroundColor Red
     }
 
-    #Sivun sis�lt�
+    #Sivun sisältä
     $IIS_sisalto = Get-Content "C:\inetpub\tiedostojako\README.txt"
  
     if ($IIS_sisalto -eq "Very important content to FTP-server for Ubuntu Server exercise.")
         {
-        Write-Host "C:\inetpub\tiedostojako\README.txt tiedoston sis�lt� on oikein eli directory browsing jakaa ftp_content.zip sis�lt�j�" -ForegroundColor Green
+        Write-Host "C:\inetpub\tiedostojako\README.txt tiedoston sisältä on oikein eli directory browsing jakaa ftp_content.zip sisältäjä" -ForegroundColor Green
         }
     else {
-        Write-Host "C:\inetpub\tiedostojako\README.txt tiedoston sis�lt� ei ole oikein. Oletko varmasti purkanut ftp_content.zip sis�ll�n oikeaan paikkaan?" -ForegroundColor Red
+        Write-Host "C:\inetpub\tiedostojako\README.txt tiedoston sisältä ei ole oikein. Oletko varmasti purkanut ftp_content.zip sisällän oikeaan paikkaan?" -ForegroundColor Red
     }
 
-    Write-Host "Onhan Directory Browsing toiminta testattu ty�asemalta k�sin?" -ForegroundColor Yellow
+    Write-Host "Onhan Directory Browsing toiminta testattu tyäasemalta käsin?" -ForegroundColor Yellow
 
     #WindowsServerBackup asennettu
     $WindowsServerBackupAsennettu = (Get-WindowsFeature  | Where-Object {$_.Name -eq "Windows-Server-Backup"}).InstallState
@@ -202,8 +202,8 @@ do
 
     Write-Host "Onhan varmuuskopion ottaminen ja tietojen palauttaminen testattu?" -ForegroundColor Yellow
 
-    Write-Host "Petja ei voi k�ytt�� varmuuskopointia, koska h�nell� ei ole siihen oikeuksia. H�nell� olisi oikeudet et�yhteyksiin?" -ForegroundColor Yellow
-    Write-Host "Jallu voi k�ytt�� varmuuskopointia, koska h�nell� on siihen oikeudet" -ForegroundColor Yellow
+    Write-Host "Petja ei voi käyttää varmuuskopointia, koska hänellä ei ole siihen oikeuksia. Hänellä olisi oikeudet etäyhteyksiin?" -ForegroundColor Yellow
+    Write-Host "Jallu voi käyttää varmuuskopointia, koska hänellä on siihen oikeudet" -ForegroundColor Yellow
 		
 	}
 	
