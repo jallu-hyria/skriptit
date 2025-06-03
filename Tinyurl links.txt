@@ -1,0 +1,21 @@
+Windows-järjestelmän hallinta:
+
+Win_jarj_hallinta_tarkistus.ps1		=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Win_jarj_hallinta_tarkistus.ps1		=	https://tinyurl.com/winvirtualisointi
+Windows_oikealaite_1.ps1		=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Windows_oikealaite_1.ps1			=	https://tinyurl.com/winoikea-1		
+Windows_oikealaite_2.ps1		=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Windows_oikealaite_2.ps1			=	https://tinyurl.com/winoikea-2
+
+Linux-järjestelmän hallinta:
+
+Lnx_jarj_hallinta_tarkistus.sh		=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Lnx_jarj_hallinta_tarkistus.sh		=	https://tinyurl.com/linuxvirtualisointi	
+Lnx_oikealaite.sh			=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Lnx_oikealaite.sh			=	https://tinyurl.com/linuxoikea
+
+Toimialueen hallinta ja ylläpito:
+
+Kayttoonotto.ps1			=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Kayttoonotto.ps1				=	https://tinyurl.com/AD-kayttoonotto
+Toimialue_oikealaite.ps1		=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Toimialue_oikealaite.ps1			=	https://tinyurl.com/toimialueoikea
+Toimialueen_hallinta_tarkistus.ps1	=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Toimialueen_hallinta_tarkistus.ps1	=	https://tinyurl.com/toimialuevirtualisointi
+
+Taitajat
+
+Win_taitaja_konf.ps1			=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Win_taitaja_konf.ps1			=	https://tinyurl.com/wintaitaja		
+Lnx_taitaja_konf.sh			=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Lnx_taitaja_konf.sh			=	https://tinyurl.com/lnxtaitaja	
