@@ -351,7 +351,7 @@ do
     #GPO Default domain policy
     $DefaultDomainPolicy = "Default Domain Policy"
     Get-GPOReport -Name $DefaultDomainPolicy -ReportType XML -Path C:\DefaultDomainPolicy.xml
-    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>MinimumPasswordLength</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>12<"
+    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>MinimumPasswordLength</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>12<"
     if ($DefaultDomainPolicyGPOpituus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on väärin" -ForegroundColor Red
@@ -363,7 +363,7 @@ do
     #GPO asenna Firefox
     $SelainAsennus = "SelainAsennus"
     Get-GPOReport -Name $SelainAsennus -ReportType XML -Path C:\SelainAsennus.xml
-    $SelainAsennusGPO = Select-String -path C:\SelainAsennus.xml -Pattern '<q1:Name>Mozilla Firefox' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern " <q1:AutoInstall>true<"
+    $SelainAsennusGPO = Select-String -path C:\SelainAsennus.xml -Pattern 'Name>Mozilla Firefox' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern "AutoInstall>true<"
     if ($SelainAsennusGPO -eq $null)
         {
         Write-Host "GPOn $SelainAsennus sääntö näyttäisi olevan väärin tehty." -ForegroundColor Red
@@ -436,3 +436,4 @@ do
     pause
  }
  until ($selection -eq 'q')
+
