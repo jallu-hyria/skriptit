@@ -351,7 +351,7 @@ do
     #GPO Default domain policy
     $DefaultDomainPolicy = "Default Domain Policy"
     Get-GPOReport -Name $DefaultDomainPolicy -ReportType XML -Path C:\DefaultDomainPolicy.xml
-    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>MinimumPasswordLength</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>12<"
+    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>MinimumPasswordLength<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>12<"
     if ($DefaultDomainPolicyGPOpituus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on väärin" -ForegroundColor Red
@@ -436,4 +436,5 @@ do
     pause
  }
  until ($selection -eq 'q')
+
 
