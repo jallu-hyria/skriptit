@@ -544,7 +544,7 @@ do
     #GPO Default domain policy
     $DefaultDomainPolicy = "Default Domain Policy"
     Get-GPOReport -Name $DefaultDomainPolicy -ReportType XML -Path C:\DefaultDomainPolicy.xml
-    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>MinimumPasswordLength</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>10<"
+    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>MinimumPasswordLength<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>10<"
     if ($DefaultDomainPolicyGPOpituus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on väärin" -ForegroundColor Red
@@ -553,7 +553,7 @@ do
         Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on oikein" -ForegroundColor Green
     }
 
-    $DefaultDomainPolicyGPOmonimutkaisuus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>PasswordComplexity</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingBoolean>true<"
+    $DefaultDomainPolicyGPOmonimutkaisuus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>PasswordComplexity<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingBoolean>true<"
     if ($DefaultDomainPolicyGPOmonimutkaisuus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy monimutkaisuus säännöt ovat väärin" -ForegroundColor Red
@@ -562,7 +562,7 @@ do
         Write-Host "GPOn $DefaultDomainPolicy monimutkaisuus säännöt ovat oikein" -ForegroundColor Green
     }
 
-    $DefaultDomainPolicyGPOlukitus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>LockoutBadCount</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>4<"
+    $DefaultDomainPolicyGPOlukitus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>LockoutBadCount<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>4<"
     if ($DefaultDomainPolicyGPOlukitus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy tilin lukitus säännöt ovat väärin" -ForegroundColor Red
@@ -574,7 +574,7 @@ do
     #GPO estä Control panel
     $EstaOhjauspaneeli = "EstäOhjauspaneeli"
     Get-GPOReport -Name $EstaOhjauspaneeli -ReportType XML -Path C:\EstaOhjauspaneeli.xml
-    $EstaOhjauspaneeliGPO = Select-String -path C:\EstaOhjauspaneeli.xml -Pattern '<q1:Name>Prohibit access to Control Panel and PC settings</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "State>Enabled<"
+    $EstaOhjauspaneeliGPO = Select-String -path C:\EstaOhjauspaneeli.xml -Pattern 'Name>Prohibit access to Control Panel and PC settings<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "State>Enabled<"
     if ($EstaOhjauspaneeliGPO -eq $null)
         {
         Write-Host "GPOn $EstaOhjauspaneeli sääntö on väärin eli Ohjauspaneelia ei ole estetty" -ForegroundColor Red
@@ -586,7 +586,7 @@ do
     #GPO estä Rekisteri
     $EstaRekisteri = "EstäRekisteri"
     Get-GPOReport -Name $EstaRekisteri -ReportType XML -Path C:\EstaRekisteri.xml
-    $EstaRekisteriGPO = Select-String -path C:\EstaRekisteri.xml -Pattern '<q1:Name>Prevent access to registry editing tools</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "State>Enabled<"
+    $EstaRekisteriGPO = Select-String -path C:\EstaRekisteri.xml -Pattern 'Name>Prevent access to registry editing tools<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "State>Enabled<"
     if ($EstaRekisteriGPO -eq $null)
         {
         Write-Host "GPOn $EstaRekisteri sääntö on väärin eli Rekisteriä ei ole estetty" -ForegroundColor Red
@@ -1072,7 +1072,7 @@ do
     #GPO asenna Chrome
     $ChromeAsennus = "ChromeAsennus"
     Get-GPOReport -Name $ChromeAsennus -ReportType XML -Path C:\ChromeAsennus.xml
-    $ChromeAsennusGPO = Select-String -path C:\ChromeAsennus.xml -Pattern '<q1:Name>Google Chrome</q1:Name>' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern " <q1:AutoInstall>true<"
+    $ChromeAsennusGPO = Select-String -path C:\ChromeAsennus.xml -Pattern 'Name>Google Chrome<' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern " AutoInstall>true<"
     if ($ChromeAsennusGPO -eq $null)
         {
         Write-Host "GPOn $ChromeAsennus sääntö näyttäisi olevan väärin tehty." -ForegroundColor Red
@@ -1106,7 +1106,7 @@ do
     #GPO asenna Firefox
     $FirefoxAsennus = "FirefoxAsennus"
     Get-GPOReport -Name $FirefoxAsennus -ReportType XML -Path C:\FirefoxAsennus.xml
-    $FirefoxAsennusGPO = Select-String -path C:\FirefoxAsennus.xml -Pattern '<q1:Name>Mozilla Firefox' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern " <q1:AutoInstall>true<"
+    $FirefoxAsennusGPO = Select-String -path C:\FirefoxAsennus.xml -Pattern 'Name>Mozilla Firefox' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern " AutoInstall>true<"
     if ($FirefoxAsennusGPO -eq $null)
         {
         Write-Host "GPOn $FirefoxAsennus sääntö näyttäisi olevan väärin tehty." -ForegroundColor Red
@@ -1137,3 +1137,4 @@ do
     pause
  }
  until ($selection -eq 'q')
+
