@@ -824,7 +824,7 @@ do
     #GPO Default domain policy
     $DefaultDomainPolicy = "Default Domain Policy"
     Get-GPOReport -Name $DefaultDomainPolicy -ReportType XML -Path C:\DefaultDomainPolicy.xml
-    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>MinimumPasswordLength</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>8<"
+    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>MinimumPasswordLength<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>8<"
     if ($DefaultDomainPolicyGPOpituus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on väärin" -ForegroundColor Red
@@ -833,7 +833,7 @@ do
         Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on oikein" -ForegroundColor Green
     }
 
-    $DefaultDomainPolicyGPOlukitus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>LockoutBadCount</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>5<"
+    $DefaultDomainPolicyGPOlukitus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>LockoutBadCount<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>5<"
     if ($DefaultDomainPolicyGPOlukitus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy tilin lukitus säännöt ovat väärin" -ForegroundColor Red
@@ -845,7 +845,7 @@ do
     #GPO estä Control panel
     $BlockControlPanel = "TurkuBlockControlPanel"
     Get-GPOReport -Name $BlockControlPanel -ReportType XML -Path C:\BlockControlPanel.xml
-    $BlockControlPanelGPO = Select-String -path C:\BlockControlPanel.xml -Pattern '<q1:Name>Prohibit access to Control Panel and PC settings</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "State>Enabled<"
+    $BlockControlPanelGPO = Select-String -path C:\BlockControlPanel.xml -Pattern 'Name>Prohibit access to Control Panel and PC settings<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "State>Enabled<"
     if ($BlockControlPanelGPO -eq $null)
         {
         Write-Host "GPOn $BlockControlPanel sääntö on väärin eli Ohjauspaneelia ei ole estetty" -ForegroundColor Red
@@ -877,7 +877,7 @@ do
     #GPO asenna Chrome
     $ChromeAsennus = "ChromeAsennus"
     Get-GPOReport -Name $ChromeAsennus -ReportType XML -Path C:\ChromeAsennus.xml
-    $ChromeAsennusGPO = Select-String -path C:\ChromeAsennus.xml -Pattern '<q1:Name>Google Chrome</q1:Name>' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern " <q1:AutoInstall>true<"
+    $ChromeAsennusGPO = Select-String -path C:\ChromeAsennus.xml -Pattern 'Name>Google Chrome<' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern " AutoInstall>true<"
     if ($ChromeAsennusGPO -eq $null)
         {
         Write-Host "GPOn $ChromeAsennus sääntö näyttäisi olevan väärin tehty." -ForegroundColor Red
@@ -899,7 +899,7 @@ do
     #GPO Edge
     $EdgeHomeButton = "EdgeHomeButton"
     Get-GPOReport -Name $EdgeHomeButton -ReportType XML -Path C:\EdgeHomeButton.xml
-    $EdgeHomeButtonGPO = Select-String -path C:\EdgeHomeButton.xml -Pattern '<q1:Name>Show Home button on toolbar<' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern "<q1:State>Enabled"
+    $EdgeHomeButtonGPO = Select-String -path C:\EdgeHomeButton.xml -Pattern 'Name>Show Home button on toolbar<' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern "State>Enabled"
     if ($EdgeHomeButtonGPO -eq $null)
         {
         Write-Host "GPOn $EdgeHomeButton sääntö näyttäisi olevan väärin tehty." -ForegroundColor Red
@@ -996,7 +996,7 @@ do
     #GPO Default domain policy
     $DefaultDomainPolicy = "Default Domain Policy"
     Get-GPOReport -Name $DefaultDomainPolicy -ReportType XML -Path C:\DefaultDomainPolicy.xml
-    $DefaultDomainPolicyValvonta = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>AuditLogonEvents</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "<q1:SuccessAttempts>true<"
+    $DefaultDomainPolicyValvonta = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>AuditLogonEvents<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SuccessAttempts>true<"
     if ($DefaultDomainPolicyValvonta -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy ei valvo kirjautumisyrityksiä" -ForegroundColor Red
@@ -1017,7 +1017,7 @@ do
         Write-Host "GPO $EnableRemoteDesktop Remote Desktop on otettu käyttöön" -ForegroundColor Green
     }
 
-    $EnableRemoteDesktopPalomuuri = Select-String -path C:\EnableRemoteDesktop.xml -Pattern '<q1:Svc>termservice<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "<q1:LPort>3389<"
+    $EnableRemoteDesktopPalomuuri = Select-String -path C:\EnableRemoteDesktop.xml -Pattern 'Svc>termservice<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "LPort>3389<"
     if ($EnableRemoteDesktopPalomuuri -eq $null)
         {
         Write-Host "GPO $EnableRemoteDesktop Remote Desktop palomuuri sääntöä ei ole tehty" -ForegroundColor Red
@@ -1766,3 +1766,4 @@ do
 
  }
  until ($selection -eq 'q')
+
