@@ -793,7 +793,7 @@ do
     #GPO Default domain policy
     $DefaultDomainPolicy = "Default Domain Policy"
     Get-GPOReport -Name $DefaultDomainPolicy -ReportType XML -Path C:\DefaultDomainPolicy.xml
-    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>MinimumPasswordLength</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>6<"
+    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>MinimumPasswordLength' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>6<"
     if ($DefaultDomainPolicyGPOpituus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on väärin" -ForegroundColor Red
@@ -802,7 +802,7 @@ do
         Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on oikein" -ForegroundColor Green
     }
 
-    $DefaultDomainPolicyGPOmonimutkaisuus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>PasswordComplexity</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingBoolean>true<"
+    $DefaultDomainPolicyGPOmonimutkaisuus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>PasswordComplexity' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingBoolean>true<"
     if ($DefaultDomainPolicyGPOmonimutkaisuus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy monimutkaisuus säännöt ovat väärin" -ForegroundColor Red
@@ -811,7 +811,7 @@ do
         Write-Host "GPOn $DefaultDomainPolicy monimutkaisuus säännöt ovat oikein" -ForegroundColor Green
     }
 
-    $DefaultDomainPolicyGPOlukitus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern '<q1:Name>LockoutBadCount</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>5<"
+    $DefaultDomainPolicyGPOlukitus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>LockoutBadCount' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>5<"
     if ($DefaultDomainPolicyGPOlukitus -eq $null)
         {
         Write-Host "GPOn $DefaultDomainPolicy tilin lukitus säännöt ovat väärin" -ForegroundColor Red
@@ -823,7 +823,7 @@ do
     #GPO estä Control panel
     $BlockControlPanel = "BlockControlPanel"
     Get-GPOReport -Name $BlockControlPanel -ReportType XML -Path C:\BlockControlPanel.xml
-    $BlockControlPanelGPO = Select-String -path C:\BlockControlPanel.xml -Pattern '<q1:Name>Prohibit access to Control Panel and PC settings</q1:Name>' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "State>Enabled<"
+    $BlockControlPanelGPO = Select-String -path C:\BlockControlPanel.xml -Pattern 'Name>Prohibit access to Control Panel and PC settings' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "State>Enabled<"
     if ($BlockControlPanelGPO -eq $null)
         {
         Write-Host "GPOn $BlockControlPanel sääntö on väärin eli Ohjauspaneelia ei ole estetty" -ForegroundColor Red
@@ -1280,3 +1280,4 @@ do
 
  }
  until ($selection -eq 'q')
+
