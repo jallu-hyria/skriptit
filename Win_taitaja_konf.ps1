@@ -1008,7 +1008,7 @@ do
     #GPO Remote Desktop
     $EnableRemoteDesktop = "EnableRemoteDesktop"
     Get-GPOReport -Name $EnableRemoteDesktop  -ReportType XML -Path C:\EnableRemoteDesktop.xml
-    $EnableRemoteDesktop1 = Select-String -path C:\EnableRemoteDesktop.xml -Pattern 'Allow users to connect remotely by using Remote Desktop Services' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "<q2:State>Enabled<"
+    $EnableRemoteDesktop1 = Select-String -path C:\EnableRemoteDesktop.xml -Pattern 'Allow users to connect remotely by using Remote Desktop Services' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "State>Enabled<"
     if ($EnableRemoteDesktop1 -eq $null)
         {
         Write-Host "GPO $EnableRemoteDesktop Remote Desktop ei ole otettu käyttöön" -ForegroundColor Red
@@ -1766,4 +1766,5 @@ do
 
  }
  until ($selection -eq 'q')
+
 
