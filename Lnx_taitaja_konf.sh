@@ -803,18 +803,18 @@ fi
 bindNSreverse=$(grep "NS\staitajalinux.fi." /etc/bind/db.0.168.192)
 if [[ $bindNSreverse =~ "taitajalinux.fi." ]]
 then
-	echo -e "${GREEN}/etc/bind/db.taitajalinux.fi tiedostossa on oikea domain nimi reverselle ${NORMAL}" 
+	echo -e "${GREEN}/etc/bind/db.0.168.192 tiedostossa on oikea domain nimi reverselle ${NORMAL}" 
 else
-	echo -e "${RED}/etc/bind/db.taitajalinux.fi tiedostossa on väärän niminen domain nimi reverselle ${NORMAL}"
+	echo -e "${RED}/etc/bind/db.0.168.192 tiedostossa on väärän niminen domain nimi reverselle ${NORMAL}"
 fi
 
 #Tietokannan PTR tietue reverse
 bindNSreversePTR=$(grep "30\sIN" /etc/bind/db.0.168.192)
 if [[ $bindNSreversePTR =~ "taitajalinux.fi." ]]
 then
-	echo -e "${GREEN}/etc/bind/db.taitajalinux.fi tiedostossa on oikea PTR tietue ${NORMAL}" 
+	echo -e "${GREEN}/etc/bind/db.0.168.192 tiedostossa on oikea PTR tietue ${NORMAL}" 
 else
-	echo -e "${RED}/etc/bind/db.taitajalinux.fi tiedostossa on väärän niminen PTR tietue ${NORMAL}"
+	echo -e "${RED}/etc/bind/db.0.168.192 tiedostossa on väärän niminen PTR tietue ${NORMAL}"
 fi
 
 echo -e "${YELLOW}Olethan testannut DNS-palvelun toiminnan työasemalta selaimen sekä nslookup ja dig työkalujen avulla myös Reverse lookup zone osalta? ${NORMAL}"
