@@ -1738,7 +1738,7 @@ do
 
     #DHCP failover kumppanin nimi
     $failoverPartner = (Get-DhcpServerv4Failover).PartnerServer
-    if ($failoverPartner -eq "taitaja-srv-002.taitajat.net")
+    if ($failoverPartner -eq "taitaja-srv-002.taitajat.fi")
         {
         Write-Host "DHCP failoverin kumppanin nimi on $failoverPartner" -ForegroundColor Green
         }
@@ -1766,5 +1766,6 @@ do
 
  }
  until ($selection -eq 'q')
+
 
 
