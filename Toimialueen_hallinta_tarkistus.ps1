@@ -1085,7 +1085,7 @@ do
     $ChromeAsennusTyyppiGPO = Select-String -path C:\ChromeAsennus.xml -Pattern 'DeploymentType>Install'
     if ($ChromeAsennusTyyppiGPO -eq $null)
         {
-        Write-Host "GPOn $ChromeAsennus sääntö on tehty niin, että se ei tule käyttäjien manuaalisesti asennettavaksi. Onhan se tyypiltään Assigned?" -ForegroundColor Red
+        Write-Host "GPOn $ChromeAsennus sääntö on tehty niin, että se ei ole Assigned." -ForegroundColor Red
         }
     else {
         Write-Host "GPOn $ChromeAsennus sääntö on niin, että se on tyypiltään Assigned" -ForegroundColor Green
@@ -1137,4 +1137,5 @@ do
     pause
  }
  until ($selection -eq 'q')
+
 
