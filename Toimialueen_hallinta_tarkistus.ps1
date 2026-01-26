@@ -1072,7 +1072,7 @@ do
     #GPO asenna Chrome
     $ChromeAsennus = "ChromeAsennus"
     Get-GPOReport -Name $ChromeAsennus -ReportType XML -Path C:\ChromeAsennus.xml
-    $ChromeAsennusGPO = Select-String -path C:\ChromeAsennus.xml -Pattern 'Name>Google Chrome<' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern " AutoInstall>true<"
+    $ChromeAsennusGPO = Select-String -path C:\ChromeAsennus.xml -Pattern 'Name>Google Chrome<' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern "AutoInstall>true<"
     if ($ChromeAsennusGPO -eq $null)
         {
         Write-Host "GPOn $ChromeAsennus sääntö näyttäisi olevan väärin tehty." -ForegroundColor Red
@@ -1137,5 +1137,6 @@ do
     pause
  }
  until ($selection -eq 'q')
+
 
 
