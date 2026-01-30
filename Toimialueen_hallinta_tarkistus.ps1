@@ -1106,7 +1106,7 @@ do
     #GPO asenna Firefox
     $FirefoxAsennus = "FirefoxAsennus"
     Get-GPOReport -Name $FirefoxAsennus -ReportType XML -Path C:\FirefoxAsennus.xml
-    $FirefoxAsennusGPO = Select-String -path C:\FirefoxAsennus.xml -Pattern 'Name>Mozilla Firefox' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern " AutoInstall>true<"
+    $FirefoxAsennusGPO = Select-String -path C:\FirefoxAsennus.xml -Pattern 'Name>Mozilla Firefox' -SimpleMatch -Context 0, 12 | Out-String -Stream | Select-String -Pattern "AutoInstall>true<"
     if ($FirefoxAsennusGPO -eq $null)
         {
         Write-Host "GPOn $FirefoxAsennus sääntö näyttäisi olevan väärin tehty." -ForegroundColor Red
@@ -1137,6 +1137,7 @@ do
     pause
  }
  until ($selection -eq 'q')
+
 
 
 
