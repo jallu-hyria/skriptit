@@ -821,25 +821,25 @@ do
         Write-Host "Näyttää siltä, että Central Store ei ole käytössä. Skripti katsoo löytyykö se polusta C:\toimialue\SYSVOL\sysvol\taitajat.fi\Policies\PolicyDefinitions. Voiko se olla jossain muualla?" -ForegroundColor Red
     }
 
-    #GPO Default domain policy
-    $DefaultDomainPolicy = "Default Domain Policy"
-    Get-GPOReport -Name $DefaultDomainPolicy -ReportType XML -Path C:\DefaultDomainPolicy.xml
-    $DefaultDomainPolicyGPOpituus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>MinimumPasswordLength<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>8<"
-    if ($DefaultDomainPolicyGPOpituus -eq $null)
+    #GPO salasana policy
+    $SalasanaPolicy = "Salasana"
+    Get-GPOReport -Name $SalasanaPolicy -ReportType XML -Path C:\SalasanaPolicy.xml
+    $SalasanaPolicyGPOpituus = Select-String -path C:\SalasanaPolicy.xml -Pattern 'Name>MinimumPasswordLength<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>8<"
+    if ($SalasanaPolicyGPOpituus -eq $null)
         {
-        Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on väärin" -ForegroundColor Red
+        Write-Host "GPOn $SalasanaPolicy minimi salasana määritys on väärin" -ForegroundColor Red
         }
     else {
-        Write-Host "GPOn $DefaultDomainPolicy minimi salasana määritys on oikein" -ForegroundColor Green
+        Write-Host "GPOn $SalasanaPolicy minimi salasana määritys on oikein" -ForegroundColor Green
     }
 
-    $DefaultDomainPolicyGPOlukitus = Select-String -path C:\DefaultDomainPolicy.xml -Pattern 'Name>LockoutBadCount<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>5<"
-    if ($DefaultDomainPolicyGPOlukitus -eq $null)
+    $SalasanaPolicyGPOlukitus = Select-String -path C:\SalasanaPolicy.xml -Pattern 'Name>LockoutBadCount<' -SimpleMatch -Context 0, 1 | Out-String -Stream | Select-String -Pattern "SettingNumber>5<"
+    if ($SalasanaPolicyGPOlukitus -eq $null)
         {
-        Write-Host "GPOn $DefaultDomainPolicy tilin lukitus säännöt ovat väärin" -ForegroundColor Red
+        Write-Host "GPOn $SalasanaPolicy tilin lukitus säännöt ovat väärin" -ForegroundColor Red
         }
     else {
-        Write-Host "GPOn $DefaultDomainPolicy tilin lukitus säännöt ovat oikein" -ForegroundColor Green
+        Write-Host "GPOn $SalasanaPolicy tilin lukitus säännöt ovat oikein" -ForegroundColor Green
     }
 
     #GPO estä Control panel
@@ -1766,6 +1766,7 @@ do
 
  }
  until ($selection -eq 'q')
+
 
 
 
