@@ -345,18 +345,17 @@ echo ""
 echo -e ${BLUE}"================ Tarkistetaan tehtävä 005 ================ ${NORMAL}"
 echo ""
 
-#DHCP portti
-dhcpIF=$(grep "INTERFACESv4" /etc/default/isc-dhcp-server)
-if [[ $dhcpIF == INTERFACESv4=\"enp0s3\" ]];
+scopePortIP=$(grep "enp0s3/192.168.1.30" /etc/kea/kea-dhcp4.conf)
+if [[ $scopePortIP =~ "enp0s3/192.168.1.30" ]]
 then
-	echo -e "${GREEN}DHCP palvelu käyttää oikeaa porttia enp0s3 ${NORMAL}"
+	echo -e "${GREEN}DHCP palvelun verkkokortin portti ja IP-osoite ovat oikeat ${NORMAL}"
 else	
-	echo -e "${RED}DHCP palvelun portti on väärä, sen pitäisi olla todennäköisesti enp0s3, jos käytössä VirtualBox alusta ${NORMAL}"
+	echo -e "${RED}DHCP palvelun verkkokortin portti ja IP-osoite ovat väärin ${NORMAL}"
 fi
 
 #DHCP osoitealue
-scopeSubnet=$(grep "subnet 192.168.1.0 netmask 255.255.255.0" /etc/dhcp/dhcpd.conf)
-if [[ $scopeSubnet =~ "subnet 192.168.1.0 netmask 255.255.255.0 {" ]]
+scopeSubnet=$(grep "192.168.1.0/24" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeSubnet =~ "192.168.1.0/24" ]]
 then
 	echo -e "${GREEN}DHCP palvelun osoitealue on oikein ${NORMAL}"
 else	
@@ -364,8 +363,8 @@ else
 fi
 
 #DHCP jaettavat osoitteet
-scopeRange=$(grep "range 192.168.1.200 192.168.1.230" /etc/dhcp/dhcpd.conf)
-if [[ $scopeRange =~ "range 192.168.1.200 192.168.1.230;" ]]
+scopeRange=$(grep "192.168.1.200 - 192.168.1.230" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeRange =~ "192.168.1.200 - 192.168.1.230" ]]
 then
 	echo -e "${GREEN}DHCP palvelun jaettavat osoitteet ovat oikein ${NORMAL}"
 else	
@@ -373,8 +372,8 @@ else
 fi
 
 #DHCP GW osoite
-scopeGW=$(grep "option routers 192.168.1.1" /etc/dhcp/dhcpd.conf)
-if [[ $scopeGW =~ "option routers 192.168.1.1;" ]]
+scopeGW=$(grep "192.168.1.1" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeGW =~ "192.168.1.1" ]]
 then
 	echo -e "${GREEN}DHCP palvelun jakama oletusyhdyskäytävän osoite on oikein ${NORMAL}"
 else	
@@ -382,25 +381,16 @@ else
 fi
 
 #DHCP DNS osoite
-scopeDNS=$(grep "option domain-name-servers 8.8.8.8" /etc/dhcp/dhcpd.conf)
-if [[ $scopeDNS =~ "option domain-name-servers 8.8.8.8;" ]]
+scopeDNS=$(grep "8.8.8.8" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeDNS =~ "8.8.8.8" ]]
 then
 	echo -e "${GREEN}DHCP palvelun jakama DNS osoite on oikein ${NORMAL}"
 else	
 	echo -e "${RED}DHCP palvelun jakama DNS osoite on väärin ${NORMAL}"
 fi
 
-#DHCP autorisointi
-authStatus=$(grep -E '^[^#]*authoritative;' /etc/dhcp/dhcpd.conf)
-if [[ $authStatus == "authoritative;" ]]
-then
-	echo -e "${GREEN}DHCP palvelu on autorisoitu ${NORMAL}"
-else	
-	echo -e "${RED}DHCP palvelu ei ole autorisoitu ${NORMAL}"
-fi
-
 #DHCP status
-dhcpStatus=$(systemctl status isc-dhcp-server | grep "Active:")
+dhcpStatus=$(systemctl status kea-dhcp4-server | grep "Active:")
 if [[ $dhcpStatus =~ "Active: active" ]]
 then
 	echo -e "${GREEN}DHCP palvelu on käytössä ${NORMAL}"
@@ -408,25 +398,29 @@ else
 	echo -e "${RED}DHCP palvelu ei ole käytössä ${NORMAL}"
 fi
 
-echo -e "${YELLOW}Testasithan yhteyden Linux ja Windows työasemiin pingaamalla niitä? ${NORMAL}"
-echo -e "${YELLOW}Saihan LNXWSKUBU työasema IP-asetukset DHCP-palvelulta eli se ei enää käytä kiinteitä IP-asetuksia? ${NORMAL}"
+echo -e "${YELLOW}Testasithan yhteyden Linux työasemaan pingaamalla niitä? ${NORMAL}"
+echo -e "${YELLOW}Saihan LNXWSK001 työasema IP-asetukset DHCP-palvelulta eli se ei enää käytä kiinteitä IP-asetuksia? ${NORMAL}"
 
 #Palvelimelta varmistus onko IP-asetuksia jaettu
-lnxwksDHCP=$(grep "LNXWKSUBU" /var/lib/dhcp/dhcpd.leases)
+lnxwksDHCP=$(grep "lnxwksubu" /var/lib/kea/kea-leases4.csv)
 if [[ $? != 0 ]];
 then
-	echo -e "${RED}Työasemalle LNXWKSUBU ei ole jaettu IP-osoite ${NORMAL}"
+	echo -e "${RED}Työasemalle lnxwksubu ei ole jaettu IP-osoite ${NORMAL}"
 else
-	echo -e "${GREEN}Työasemalle LNXWKSUBU on jaettu IP-osoite ${NORMAL}"
+	echo -e "${GREEN}Työasemalle lnxwksubu on jaettu IP-osoite ${NORMAL}"
 fi
 
-winwkslDHCP=$(grep "WINWKSL" /var/lib/dhcp/dhcpd.leases)
+#Palvelimelta varmistus onko IP-asetuksia jaettu
+winwksDHCP=$(grep "winwksl" /var/lib/kea/kea-leases4.csv)
 if [[ $? != 0 ]];
 then
-	echo -e "${RED}Työasemalle WINWKSL ei ole jaettu IP-osoite ${NORMAL}"
+	echo -e "${RED}Työasemalle winwksl ei ole jaettu IP-osoite ${NORMAL}"
 else
-	echo -e "${GREEN}Työasemalle WINWKSL on jaettu IP-osoite ${NORMAL}"
+	echo -e "${GREEN}Työasemalle winwksl on jaettu IP-osoite ${NORMAL}"
 fi
+
+echo -e "${YELLOW}Testasithan yhteyden Linux ja Windows työasemiin pingaamalla niitä? ${NORMAL}"
+echo -e "${YELLOW}Saihan LNXWSKUBU työasema IP-asetukset DHCP-palvelulta eli se ei enää käytä kiinteitä IP-asetuksia? ${NORMAL}"
 ;; 
 
 "006 SSH") 
