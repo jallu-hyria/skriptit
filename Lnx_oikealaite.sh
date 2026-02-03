@@ -114,8 +114,8 @@ else
 fi
 
 #DHCP osoitealue
-scopeSubnet=$(grep "subnet 192.168.200.0 netmask 255.255.255.0" /etc/dhcp/dhcpd.conf)
-if [[ $scopeSubnet =~ "subnet 192.168.200.0 netmask 255.255.255.0 {" ]]
+scopeSubnet=$(grep "192.168.200.0/24" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeSubnet =~ "192.168.200.0/24" ]]
 then
 	echo -e "${GREEN}DHCP palvelun osoitealue on oikein ${NORMAL}"
 else	
@@ -123,8 +123,8 @@ else
 fi
 
 #DHCP jaettavat osoitteet
-scopeRange=$(grep "range 192.168.200.100 192.168.200.250" /etc/dhcp/dhcpd.conf)
-if [[ $scopeRange =~ "range 192.168.200.100 192.168.200.250;" ]]
+scopeRange=$(grep "192.168.200.100 - 192.168.200.250" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeRange =~ "192.168.200.100 - 192.168.200.250" ]]
 then
 	echo -e "${GREEN}DHCP palvelun jaettavat osoitteet ovat oikein ${NORMAL}"
 else	
@@ -132,8 +132,8 @@ else
 fi
 
 #DHCP GW osoite
-scopeGW=$(grep "option routers 192.168.200.1" /etc/dhcp/dhcpd.conf)
-if [[ $scopeGW =~ "option routers 192.168.200.1;" ]]
+scopeGW=$(grep "192.168.200.1" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeGW =~ "192.168.200.1" ]]
 then
 	echo -e "${GREEN}DHCP palvelun jakama oletusyhdyskäytävän osoite on oikein ${NORMAL}"
 else	
@@ -141,8 +141,8 @@ else
 fi
 
 #DHCP DNS osoite
-scopeDNS=$(grep "option domain-name-servers 8.8.8.8" /etc/dhcp/dhcpd.conf)
-if [[ $scopeDNS =~ "option domain-name-servers 8.8.8.8;" ]]
+scopeDNS=$(grep "8.8.8.8" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeDNS =~ "8.8.8.8" ]]
 then
 	echo -e "${GREEN}DHCP palvelun jakama DNS osoite on oikein ${NORMAL}"
 else	
@@ -150,7 +150,7 @@ else
 fi
 
 #DHCP status
-dhcpStatus=$(systemctl status isc-dhcp-server | grep "Active:")
+dhcpStatus=$(systemctl status kea-dhcp4-server | grep "Active:")
 if [[ $dhcpStatus =~ "Active: active" ]]
 then
 	echo -e "${GREEN}DHCP palvelu on käytössä ${NORMAL}"
