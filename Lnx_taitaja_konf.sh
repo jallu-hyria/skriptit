@@ -472,8 +472,8 @@ else
 fi
 
 #DHCP varaus
-reservationHost=$(grep "lnxwks001" /etc/kea/kea-dhcp4.conf)
-if [[ $reservationHost =~ "lnxwks001" ]]
+reservationHost=$(grep "LNXWKS001" /etc/kea/kea-dhcp4.conf)
+if [[ $reservationHost =~ "LNXWKS001" ]]
 then
 	echo -e "${GREEN}DHCP varauksen laitenimi on oikein ${NORMAL}"
 else	
@@ -509,7 +509,7 @@ echo -e "${YELLOW}Testasithan yhteyden Linux työasemaan pingaamalla niitä? ${N
 echo -e "${YELLOW}Saihan LNXWSK001 työasema IP-asetukset DHCP-palvelulta eli se ei enää käytä kiinteitä IP-asetuksia? ${NORMAL}"
 
 #Palvelimelta varmistus onko IP-asetuksia jaettu
-lnxwksDHCP=$(grep "LNXWKS001" /var/lib/kea/kea-leases4.csv)
+lnxwksDHCP=$(grep "lnxwks001" /var/lib/kea/kea-leases4.csv)
 if [[ $? != 0 ]];
 then
 	echo -e "${RED}Työasemalle LNXWKS001 ei ole jaettu IP-osoite ${NORMAL}"
