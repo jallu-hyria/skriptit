@@ -427,13 +427,17 @@ echo ""
 echo -e ${BLUE}"================ Tarkistetaan tehtävä 006 ================ ${NORMAL}"
 echo ""
 
-#DHCP portti
-echo -e "${YELLOW}Katso /etc/default/isc-dhcp-server tiedostosta portti, josta DHCP jakaa IP-asetuksia. ${NORMAL}"
-echo -e "${YELLOW}Vastaahan se porttia, jolle on annettu IP-asetukset? Näet sen komennolla: ip a ${NORMAL}"
+scopePortIP=$(grep "eth0/192.168.0.30" /etc/kea/kea-dhcp4.conf)
+if [[ $scopePortIP =~ "eth0/192.168.0.30" ]]
+then
+	echo -e "${GREEN}DHCP palvelun verkkokortin portti ja IP-osoite ovat oikeat ${NORMAL}"
+else	
+	echo -e "${RED}DHCP palvelun verkkokortin portti ja IP-osoite ovat väärin ${NORMAL}"
+fi
 
 #DHCP osoitealue
-scopeSubnet=$(grep "subnet 192.168.0.0 netmask 255.255.255.0" /etc/dhcp/dhcpd.conf)
-if [[ $scopeSubnet =~ "subnet 192.168.0.0 netmask 255.255.255.0 {" ]]
+scopeSubnet=$(grep "192.168.0.0/24" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeSubnet =~ "192.168.0.0/24" ]]
 then
 	echo -e "${GREEN}DHCP palvelun osoitealue on oikein ${NORMAL}"
 else	
@@ -441,8 +445,8 @@ else
 fi
 
 #DHCP jaettavat osoitteet
-scopeRange=$(grep "range 192.168.0.200 192.168.0.230" /etc/dhcp/dhcpd.conf)
-if [[ $scopeRange =~ "range 192.168.0.200 192.168.0.230;" ]]
+scopeRange=$(grep "192.168.0.200 - 192.168.0.230" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeRange =~ "192.168.0.200 - 192.168.0.230" ]]
 then
 	echo -e "${GREEN}DHCP palvelun jaettavat osoitteet ovat oikein ${NORMAL}"
 else	
@@ -450,8 +454,8 @@ else
 fi
 
 #DHCP GW osoite
-scopeGW=$(grep "option routers 192.168.0.1" /etc/dhcp/dhcpd.conf)
-if [[ $scopeGW =~ "option routers 192.168.0.1;" ]]
+scopeGW=$(grep "192.168.0.1" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeGW =~ "192.168.0.1" ]]
 then
 	echo -e "${GREEN}DHCP palvelun jakama oletusyhdyskäytävän osoite on oikein ${NORMAL}"
 else	
@@ -459,42 +463,33 @@ else
 fi
 
 #DHCP DNS osoite
-scopeDNS=$(grep "option domain-name-servers 8.8.8.8" /etc/dhcp/dhcpd.conf)
-if [[ $scopeDNS =~ "option domain-name-servers 8.8.8.8;" ]]
+scopeDNS=$(grep "8.8.8.8" /etc/kea/kea-dhcp4.conf)
+if [[ $scopeDNS =~ "8.8.8.8" ]]
 then
 	echo -e "${GREEN}DHCP palvelun jakama DNS osoite on oikein ${NORMAL}"
 else	
 	echo -e "${RED}DHCP palvelun jakama DNS osoite on väärin ${NORMAL}"
 fi
 
-#DHCP autorisointi
-authStatus=$(grep -E '^[^#]*authoritative;' /etc/dhcp/dhcpd.conf)
-if [[ $authStatus == "authoritative;" ]]
-then
-	echo -e "${GREEN}DHCP palvelu on autorisoitu ${NORMAL}"
-else	
-	echo -e "${RED}DHCP palvelu ei ole autorisoitu ${NORMAL}"
-fi
-
 #DHCP varaus
-reservationHost=$(grep "host LNXTAITAJA {" /etc/dhcp/dhcpd.conf)
-if [[ $reservationHost =~ "host LNXTAITAJA {" ]]
+reservationHost=$(grep "LNXWKS001" /etc/kea/kea-dhcp4.conf)
+if [[ $reservationHost =~ "LNXWKS001" ]]
 then
 	echo -e "${GREEN}DHCP varauksen laitenimi on oikein ${NORMAL}"
 else	
 	echo -e "${RED}DHCP varauksen laitenimi ei ole oikein ${NORMAL}"
 fi
 
-reservationMAC=$(grep "hardware ethernet 00:01:02:03:AB:DF;" /etc/dhcp/dhcpd.conf)
-if [[ $reservationMAC =~ "hardware ethernet 00:01:02:03:AB:DF" ]]
+reservationMAC=$(grep "00:01:02:03:AB:DF" /etc/kea/kea-dhcp4.conf)
+if [[ $reservationMAC =~ "00:01:02:03:AB:DF" ]]
 then
 	echo -e "${GREEN}DHCP varauksen MAC-osoite on oikein ${NORMAL}"
 else	
 	echo -e "${RED}DHCP varauksen MAC-osoite ei ole oikein ${NORMAL}"
 fi
 
-reservationIP=$(grep "fixed-address 192.168.0.225" /etc/dhcp/dhcpd.conf)
-if [[ $reservationIP =~ "fixed-address 192.168.0.225" ]]
+reservationIP=$(grep "192.168.0.225" /etc/kea/kea-dhcp4.conf)
+if [[ $reservationIP =~ "192.168.0.225" ]]
 then
 	echo -e "${GREEN}DHCP varauksen IP-osoite on oikein ${NORMAL}"
 else	
@@ -502,7 +497,7 @@ else
 fi
 
 #DHCP status
-dhcpStatus=$(systemctl status isc-dhcp-server | grep "Active:")
+dhcpStatus=$(systemctl status kea-dhcp4-server | grep "Active:")
 if [[ $dhcpStatus =~ "Active: active" ]]
 then
 	echo -e "${GREEN}DHCP palvelu on käytössä ${NORMAL}"
@@ -514,7 +509,7 @@ echo -e "${YELLOW}Testasithan yhteyden Linux työasemaan pingaamalla niitä? ${N
 echo -e "${YELLOW}Saihan LNXWSK001 työasema IP-asetukset DHCP-palvelulta eli se ei enää käytä kiinteitä IP-asetuksia? ${NORMAL}"
 
 #Palvelimelta varmistus onko IP-asetuksia jaettu
-lnxwksDHCP=$(grep "LNXWKS001" /var/lib/dhcp/dhcpd.leases)
+lnxwksDHCP=$(grep "LNXWKS001" /var/lib/kea/kea-leases4.csv)
 if [[ $? != 0 ]];
 then
 	echo -e "${RED}Työasemalle LNXWKS001 ei ole jaettu IP-osoite ${NORMAL}"
