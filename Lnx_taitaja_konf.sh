@@ -758,7 +758,7 @@ fi
 
 #DHCP muutos DNS-osoitteen vaihdon vuoksi
 bindScopeDNS=$(grep "192.168.0.30" /etc/kea/kea-dhcp4.conf)
-if [[ $bindScopeDNS =~ "192.168.0.30;" ]]
+if [[ $bindScopeDNS =~ "192.168.0.30" ]]
 then
 	echo -e "${GREEN}DHCP palvelulle on muutettu oikea DNS-osoite ${NORMAL}" 
 else
