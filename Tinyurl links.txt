@@ -14,6 +14,7 @@ Toimialueen hallinta ja ylläpito:
 Kayttoonotto.ps1			=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Kayttoonotto.ps1				=	https://tinyurl.com/AD-kayttoonotto
 Toimialue_oikealaite.ps1		=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Toimialue_oikealaite.ps1			=	https://tinyurl.com/toimialueoikea
 Toimialueen_hallinta_tarkistus.ps1	=	https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Toimialueen_hallinta_tarkistus.ps1	=	https://tinyurl.com/toimialuevirtualisointi
+Pilvi_AD_tarkistus.ps1      =  https://raw.githubusercontent.com/jallu-hyria/skriptit/refs/heads/main/Pilvi_AD_tarkistus.ps1      =    https://tinyurl.com/pilvitoimialue
 
 Taitajat
 
