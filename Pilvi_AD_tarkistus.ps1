@@ -1,4 +1,4 @@
-﻿# Versio 1.00. 7.8.2026 Jalmari Välimaan tikkukirjaimilla tehty
+# Versio 1.00. 7.8.2026 Jalmari Välimaan tikkukirjaimilla tehty
 #      ____.      .__  .__         
 #     |    |____  |  | |  |  __ __ 
 #     |    \__  \ |  | |  | |  |  \
@@ -9,6 +9,10 @@
 #Kirjoita tämän muuttujan arvoksi toimialueesi domain nimi!
 #esimerkiksi näin: $domainNimi = "@pilviad.onmicrosoft.com"
 $domainNimi = "@pilviad.onmicrosoft.com"
+
+#Kirjoita tämän muuttujan arvoksi toimialueesi admin käyttäjän tunnus!
+#esimerkiksi näin: $adminTili = "jallu@pilviad.onmicrosoft.com"
+$adminTili = "jallu@pilviad.onmicrosoft.com"
 
 # Katsotaan onko Entra Powershell moduuli asennettu. Jos ei ole niin asennetaan se
 $moduuliAsennettu = (Get-InstalledModule -Name Microsoft.Entra).Name
@@ -31,8 +35,18 @@ else {
 	Install-Module -Name Microsoft.Entra.Beta -Repository PSGallery -Scope AllUsers -Force -AllowClobber
 }
 
-	Write-Host "Pyydettäessä anna pilvi toimialueesi Admin tasoiset tunnukset, jotta skripti voi tarkistaa sieltä asioita" -ForegroundColor Green
-	Connect-Entra -Scopes 'User.Read.All', 'Group.Read.All', 'GroupMember.Read.All', 'Organization.Read.All', 'LicenseAssignment.Read.All', 'AuditLog.Read.All', 'UserAuthenticationMethod.Read.All', 'Directory.Read.All', 'Policy.Read.All', 'DeviceManagementManagedDevices.Read.All', 'DeviceManagementServiceConfig.Read.All', 'DeviceManagementConfiguration.Read.All', 'DeviceManagementApps.Read.All', 'DeviceManagementScripts.Read.All'
+$moduuliAsennettuExchange = (Get-InstalledModule -Name ExchangeOnlineManagement).Name
+if ($moduuliAsennettuExchange -eq "ExchangeOnlineManagement")
+	{
+	Write-Host "ExchangeOnlineManagement moduuli on jo asennettu Powershelliin. Kirjaudutaan omaan pilvi toimialueeseesi!" -ForegroundColor Green
+	}
+else {
+	Write-Host "ExchangeOnlineManagement Powershell moduulia ei ole asennettu. Asennetaan se. Tässä voi kestää hetki!" -ForegroundColor Red
+	Install-Module -Name ExchangeOnlineManagement -Repository PSGallery -Scope AllUsers -Force -AllowClobber
+}
+
+Write-Host "Pyydettäessä anna pilvi toimialueesi Admin tasoiset tunnukset, jotta skripti voi tarkistaa sieltä asioita" -ForegroundColor Green
+Connect-Entra -Scopes 'User.Read.All', 'Group.Read.All', 'GroupMember.Read.All', 'Organization.Read.All', 'LicenseAssignment.Read.All', 'AuditLog.Read.All', 'UserAuthenticationMethod.Read.All', 'Directory.Read.All', 'Policy.Read.All', 'DeviceManagementManagedDevices.Read.All', 'DeviceManagementServiceConfig.Read.All', 'DeviceManagementConfiguration.Read.All', 'DeviceManagementApps.Read.All', 'DeviceManagementScripts.Read.All'
 
 function Show-Menu {
     param (
@@ -851,9 +865,167 @@ do
 
     '9' {
     Write-Host "================ Tarkistetaan tehtävä 009 ================"
-    
+	# Muodostetaan yhteys Exchange palveluun vain tätä tehtävää varten
+	Connect-ExchangeOnline
+ 
+    $userAnneliGMark = (Get-EntraUserGroup -UserId "Anneli.k$domainNimi" | Where-Object {$_.DisplayName -eq "Markkinointi"}).displayName
+    if ($userAnneliGMark -eq "Markkinointi")
+        {
+        Write-Host "Käyttäjä nimeltään Anneli on oikeassa ryhmässä" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Käyttäjää nimeltään Anneli ei ole ryhmässä Markkinointi" -ForegroundColor Red
+    }	
+
+    $resourceSaunaCapacity = (Get-Place -Identity Saunaosasto).capacity
+    if ($resourceSaunaCapacity -eq "25")
+        {
+        Write-Host "Saunaosaston kapasiteetti on 25" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Saunaosaston kapasiteetti ei ole 25" -ForegroundColor Red
+    }
+
+    $resourceSaunaDur = (Get-CalendarProcessing -Identity Saunaosasto).MaximumDurationInMinutes
+    if ($resourceSaunaDur -eq "360")
+        {
+        Write-Host "Saunaosasto on varattavissa 6 tunniksi eli 360 minuutiksi kerrallaan" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Saunaosasto ei ole varattavissa 6 tunniksi eli 360 minuutiksi kerrallaan" -ForegroundColor Red
+    }
+
+    $resourceSaunaAutoAcc = (Get-CalendarProcessing -Identity Saunaosasto).AllBookInPolicy
+    if ($resourceSaunaAutoAcc -eq $true)
+        {
+        Write-Host "Saunaosasto on kenen tahansa varattavissa" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Saunaosasto ei ole kenen tahansa varattavissa" -ForegroundColor Red
+    }
+
+    $resourceJohtoCapacity = (Get-Place -Identity Johto).capacity
+    if ($resourceJohtoCapacity -eq "10")
+        {
+        Write-Host "Johto neuvotteluhuoneen kapasiteetti on 10" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Johto neuvotteluhuoneen kapasiteetti ei ole 10" -ForegroundColor Red
+    }
+
+    $resourceJohtoAutoAcc = (Get-CalendarProcessing -Identity Johto).AllRequestInPolicy
+    if ($resourceJohtoAutoAcc -eq $true)
+        {
+        Write-Host "Johto neuvotteluhuonetta ei voi kuka tahansa varata" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Johto neuvotteluhuoneen voi varata kuka tahansa" -ForegroundColor Red
+    }
+
+    $resourceAudiCapacity = (Get-Mailbox -Identity audia6).ResourceCapacity
+    if ($resourceAudiCapacity -eq "5")
+        {
+        Write-Host "Audi A6 kapasiteetti on 5" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Audi A6 kapasiteetti ei ole 5" -ForegroundColor Red
+    }
+
+    $distListEmail = (Get-DistributionGroup | Where-Object {$_.DisplayName -eq "ICT-palvelut"}).WindowsEmailAddress
+    if ($distListEmail -eq "ICT-palvelut$domainNimi")
+        {
+        Write-Host "Distribution List sähköpostiosoite on oikein" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Distribution List sähköpostiosoite ei ole oikein" -ForegroundColor Red
+    }
+
+	# Haetaan admin tilin ID
+	$adminTiliID = (Get-EntraUser -userid $adminTili).Id 
+	$distListManaged = (Get-DistributionGroup | Where-Object {$_.DisplayName -eq "ICT-palvelut"}).ManagedBy
+	if ($distListManaged -eq $adminTiliID)
+		{
+		Write-Host "Distribution List hallitsija on oma admin tilisi" -ForegroundColor Green
+		}
+	else {
+		Write-Host "Distribution List hallitsija ei ole oma admin tilisi" -ForegroundColor Red
+	}
+
+    $distListInsideonly = (Get-DistributionGroup | Where-Object {$_.DisplayName -eq "ICT-palvelut"}).RequireSenderAuthenticationEnabled
+    if ($distListInsideonly -eq $True)
+        {
+        Write-Host "Distribution List voi lähettää sähköpostia vain organisaation sisältä" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Distribution List voi lähettää sähköpostia organisaation ulkopuolelta" -ForegroundColor Red
+    }
+
+    $distListClosed = (Get-DistributionGroup | Where-Object {$_.DisplayName -eq "ICT-palvelut"}).MemberJoinRestriction
+    if ($distListClosed -eq "Closed")
+        {
+        Write-Host "Distribution List liittyminen on tyypiltään suljettu eli siihen ei voi liittyä kuka tahansa" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Distribution List liittyminen ei ole tyypiltään suljettu eli siihen ei voi liittyä kuka tahansa" -ForegroundColor Red
+    }
+
+    $sharedMailboxEmail = (Get-Mailbox -RecipientTypeDetails SharedMailbox | Where-Object {$_.Name -eq "MAVI"}).WindowsEmailAddress
+    if ($sharedMailboxEmail -eq "MAVI$domainNimi")
+        {
+        Write-Host "Jaetun sähköpostilaatikon sähköpostiosoite on oikein" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Jaetun sähköpostilaatikon sähköpostiosoite ei ole oikein" -ForegroundColor Red
+    }
+
+    $sharedMailboxSendasMartti = (Get-RecipientPermission "MAVI" | Where-Object {$_.Trustee -eq "martti.a$domainNimi"}).AccessRights
+    if ($sharedMailboxSendasMartti -eq "SendAs")
+        {
+        Write-Host "Martti voi lähettää sähköpostia sähköpostiosoitteesta MAVI@domainisi" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Martti voi lähettää sähköpostia sähköpostiosoitteesta MAVI@domainisi" -ForegroundColor Red
+    }
+
+    $sharedMailboxSendasTarja = (Get-RecipientPermission "MAVI" | Where-Object {$_.Trustee -eq "Tarja.h$domainNimi"}).AccessRights
+    if ($sharedMailboxSendasTarja -eq "SendAs")
+        {
+        Write-Host "Tarja voi lähettää sähköpostia sähköpostiosoitteesta MAVI@domainisi" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Tarja voi lähettää sähköpostia sähköpostiosoitteesta MAVI@domainisi" -ForegroundColor Red
+    }
+
+    $sharedMailboxMailtip = (Get-Mailbox -RecipientTypeDetails SharedMailbox | Where-Object {$_.Name -eq "MAVI"}).mailtip
+    if ($sharedMailboxMailtip.Contains("MAVI lomailee tämän viikon"))
+        {
+        Write-Host "Jaetun sähköpostilaatikon Mailtip on oikein" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Jaetun sähköpostilaatikon Mailtip ei ole oikein" -ForegroundColor Red
+    }
+
+    $userSannaUusiUPN = (Get-EntraUser | Where-Object {$_.UserPrincipalName -eq "Sanna.m$domainNimi"}).UserPrincipalName
+    if ($userSannaUusiUPN -eq "Sanna.m$domainNimi")
+        {
+        Write-Host "Käyttäjän Sanna uusi kirjautumistunnus on Sanna@domainisi" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Käyttäjän Sanna uusi kirjautumistunnus ei ole Sanna@domainisi" -ForegroundColor Red
+    }
+
+    $userSannaUusiDN = (Get-EntraUser | Where-Object {$_.UserPrincipalName -eq "Sanna.m$domainNimi"}).displayName
+    if ($userSannaUusiDN -eq "Sanna Mäkelä")
+        {
+        Write-Host "Käyttäjän Sanna koko nimi on Sanna Mäkelä eli se on muutettu" -ForegroundColor Green
+        }
+    else {
+        Write-Host "Käyttäjän Sanna koko nimi ei ole Sanna Mäkelä eli sitä ei ole muutettu" -ForegroundColor Red
+    }
 	
-	
+	Write-Host "SharePoint toiminnallisuutta ei tarkisteta skriptillä" -ForegroundColor Yellow
+	Write-Host "Olethan testannut eri toimintojen toiminnallisuuden ja dokumentoinut ne?" -ForegroundColor Yellow
+	Write-Host "Mobiilisovelluksen toimivuutta ei testata skriptillä" -ForegroundColor Yellow
 	} 
 
     '10' {
