@@ -82,7 +82,7 @@ do
     #DNS-osoite
     $dnsOsoite = (Get-DnsClientServerAddress -InterfaceAlias $IP_NIC -AddressFamily IPv4).ServerAddresses
 
-    if ($dnsOsoite -eq "10.3.184.2")
+    if ($dnsOsoite -eq "10.3.184.22")
         {
         Write-Host "DNS on $dnsOsoite eli oikein" -ForegroundColor Green
         }
