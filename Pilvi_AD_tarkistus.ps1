@@ -345,7 +345,7 @@ do
 
 	Write-Host "Olethan harjoitellut käyttäjän salasanan resetoimista?" -ForegroundColor Yellow
     $userAnneliID = (Get-EntraUser | Where-Object {$_.UserPrincipalName -eq "anneli.k$domainNimi"}).Id
-	$userAnneliSSPR = (Invoke-MgGraphRequest -Method Get -Uri https://graph.microsoft.com/v1.0/reports/authenticationMethods/userRegistrationDetails/$userAnneliID).isSsprRegistered
+	$userAnneliSSPR = (Invoke-MgGraphRequest -Method Get -Uri https://graph.microsoft.com/v1.0/reports/authenticationMethods/userRegistrationDetails/$userAnneliID).isSsprEnabled
     if ($userAnneliSSPR -eq $True)
         {
         Write-Host "Käyttäjällä nimeltään Anneli on käytössä SSPR" -ForegroundColor Green
@@ -355,7 +355,7 @@ do
     }
 
     $userMarttiID = (Get-EntraUser | Where-Object {$_.UserPrincipalName -eq "Martti.a$domainNimi"}).Id
-	$userMarttiSSPR = (Invoke-MgGraphRequest -Method Get -Uri https://graph.microsoft.com/v1.0/reports/authenticationMethods/userRegistrationDetails/$userMarttiID).isSsprRegistered
+	$userMarttiSSPR = (Invoke-MgGraphRequest -Method Get -Uri https://graph.microsoft.com/v1.0/reports/authenticationMethods/userRegistrationDetails/$userMarttiID).isSsprEnabled
     if ($userMarttiSSPR -eq $False)
         {
         Write-Host "Käyttäjällä nimeltään Martti ei ole käytössä SSPR koska hän ei ole Talous ryhmän jäsen" -ForegroundColor Green
