@@ -1091,7 +1091,7 @@ do
         Write-Host "Conditional Access nimeltään AllowedCountries ei ole määritelty estämään yhteydet eli se ei ole Grant tilassa" -ForegroundColor Red
 	}
 	
-	$CAenabled = (Get-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId 73039c0c-d181-4a29-bd46-34c7b365b12f).state
+	$CAenabled = (Get-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId $CAID).state
     if ($CAenabled -eq "enabled")
         {
         Write-Host "Conditional Access nimeltään AllowedCountries on otettu käyttöön" -ForegroundColor Green
