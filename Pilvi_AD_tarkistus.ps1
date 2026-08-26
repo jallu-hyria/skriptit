@@ -815,7 +815,7 @@ do
 
 	$androidConfID = (Invoke-MgGraphRequest -method get -uri "https://graph.microsoft.com/v1.0/deviceManagement/deviceConfigurations?`$select=id,displayName" -OutputType PSOBject | Select-Object -ExpandProperty value | Where-Object {$_.DisplayName -eq "AndroidRestrictions"}).id
 	$androidConf = (Invoke-MgGraphRequest -method get -uri https://graph.microsoft.com/v1.0/deviceManagement/deviceConfigurations/$androidConfID/).passwordRequiredType
-	if ($androidConf -eq "atLeastNumeric")
+	if ($androidConf -eq "atLeastAlphaNumeric")
         {
         Write-Host "Android salasanojen tulee olla vähintään alfanumeerisia eli sisältää kirjaimia ja numeroita" -ForegroundColor Green
         }
