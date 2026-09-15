@@ -479,7 +479,7 @@ do
         Write-Host "Tietokone nimeltään $tietokone_ta099 on olemassa polussa: $tietokone_ta099Polku" -ForegroundColor Green
         }
     else {
-        Write-Host "Tietokone nimeltään windows-ta-099 ei löytynyt oikeasta paikasta" -ForegroundColor Red
+        Write-Host "Tietokone nimeltään tk-ta-099-tehopc ei löytynyt oikeasta paikasta" -ForegroundColor Red
     }
 
     #AD roskakori
@@ -667,10 +667,10 @@ do
 
     if ($dhcpTesti -eq "True")
         {
-        Write-Host "Yhteyttä testattu osoitteeseen $dhcpTestiIP (laite nimeltään windows-ta-001), yhteys onnistui" -ForegroundColor Green
+        Write-Host "Yhteyttä testattu osoitteeseen $dhcpTestiIP (laite nimeltään taitaja-ta-001), yhteys onnistui" -ForegroundColor Green
         }
     else {
-        Write-Host "Yhteyttä testattu osoitteeseen $dhcpTestiIP (laite nimeltään windows-ta-001), yhteys ei onnistunut. Onhan palomuurista sallittu pingaaminen?" -ForegroundColor Red
+        Write-Host "Yhteyttä testattu osoitteeseen $dhcpTestiIP (laite nimeltään taitaja-ta-001), yhteys ei onnistunut. Onhan palomuurista sallittu pingaaminen?" -ForegroundColor Red
     }
 
     #DHCP tilastot ja database polku
