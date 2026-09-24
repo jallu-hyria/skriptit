@@ -472,8 +472,8 @@ else
 fi
 
 #DHCP varaus
-reservationHost=$(grep "LNXWKS001" /etc/kea/kea-dhcp4.conf)
-if [[ $reservationHost =~ "LNXWKS001" ]]
+reservationHost=$(grep "LNXTAITAJA" /etc/kea/kea-dhcp4.conf)
+if [[ $reservationHost =~ "LNXTAITAJA" ]]
 then
 	echo -e "${GREEN}DHCP varauksen laitenimi on oikein ${NORMAL}"
 else	
